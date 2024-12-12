@@ -1,49 +1,60 @@
-#### Imports et définition des variables globales
-
-
-#### Fonctions secondaires
-
+"""
+Module providing functions for encoding strings using iterative and recursive approaches.
+"""
 
 def artcode_i(s):
-    """retourne la liste de tuples encodant une chaîne de caractères passée en argument selon un algorithme itératif
-
-    Args:
-        s (str): la chaîne de caractères à encoder
-
-    Returns:
-        list: la liste des tuples (caractère, nombre d'occurences)
     """
-    
-    # votre code ici
+    Retourne la liste de tuples
 
-    return [ ]
+    """
+    if not s:
+        return []
 
+    encoded = []
+    current_char = s[0]
+    count = 1
+
+    for char in s[1:]:
+        if char == current_char:
+            count += 1
+        else:
+            encoded.append((current_char, count))
+            current_char = char
+            count = 1
+
+    # Ajouter le dernier groupe
+    encoded.append((current_char, count))
+
+    return encoded
 
 def artcode_r(s):
-    """retourne la liste de tuples encodant une chaîne de caractères passée en argument selon un algorithme récursif
-
-    Args:
-        s (str): la chaîne de caractères à encoder
-
-    Returns:
-        list: la liste des tuples (caractère, nombre d'occurences)
     """
-    
-    # votre code ici
+    Retourne la liste de tuples
 
-    # cas de base
-    # recherche nombre de caractères identiques au premier
-    # appel récursif
+    """
+    if not s:
+        return []
 
-    return []
-    
+    result = []
+    stack = [(0, s[0], 1)]  # (index, current_char, count)
 
-#### Fonction principale
+    for index in range(1, len(s)):
+        if s[index] == stack[-1][1]:
+            stack[-1] = (stack[-1][0], stack[-1][1], stack[-1][2] + 1)
+        else:
+            result.append((stack[-1][1], stack[-1][2]))
+            stack[-1] = (index, s[index], 1)
 
+    result.append((stack[-1][1], stack[-1][2]))
+    return result
 
 def main():
-    print(artcode_i('MMMMaaacXolloMM'))
-    print(artcode_r('MMMMaaacXolloMM'))
+    """
+    Fonction principale qui teste les deux fonctions secondaires.
+    """
+    test_string = 'MMMMaaacXolloMM'
+    print("Codage itératif :", artcode_i(test_string))
+    print("Codage simulant récursion :", artcode_r(test_string))
 
 if __name__ == "__main__":
     main()
